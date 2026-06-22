@@ -4,7 +4,7 @@ const fs=require('fs');
 
 const server=http.createServer((req,res)=>{
 
-    const url=req.url;
+   const url=req.url;
     const method=req.method;
 
     if(req.url==='/'){
@@ -66,7 +66,7 @@ const server=http.createServer((req,res)=>{
 }else{
     res.statusCode = 404;
     res.end('Page Not Found');
-}
+}  
         
         
 });
