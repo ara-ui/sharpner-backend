@@ -12,11 +12,8 @@ const server=http.createServer((req,res)=>{
         res.setHeader('Content-Type','text/html');
 
         res.end(`<form action="/message" method="POST">
-            <label>Name:</label>
-            <input type="text" name="username">
-            <br>
-            <label>Email:</label>
-            <input type="email" name="useremail">
+            <label>Message:</label>
+            <input type="text" name="msg">
             <br>
             <button type="submit">Submit</button>
         </form>`);
@@ -38,7 +35,7 @@ const server=http.createServer((req,res)=>{
 
                 const formData=parsedBody.split('&')[0].split('=')[1];
     
-                fs.writeFile('message.txt',formData,(err)=>{
+                fs.writeFile('formvalues.txt',formData,(err)=>{
                     if(err){
                         console.log(err);
                     }
@@ -48,12 +45,30 @@ const server=http.createServer((req,res)=>{
                 });
                 
             });
+        
             
-        }else{
-            res.statusCode=404;
-            res.setHeader('Content-Type','text/html');
-            res.end('<h1>Page Not Found</h1>');
+        }else if(req.url === '/read'){
+
+    fs.readFile('formvalues.txt',(err,data)=>{
+
+        if(err){
+            return res.end('No data found');
         }
+
+        res.setHeader('Content-Type','text/html');
+
+        res.end(`
+            <h1>${data.toString()}</h1>
+        `);
+
+    });
+
+}else{
+    res.statusCode = 404;
+    res.end('Page Not Found');
+}
+        
+        
 });
 
 server.listen(3000,()=>{
